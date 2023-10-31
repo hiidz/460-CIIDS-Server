@@ -83,10 +83,10 @@ controller.deleteACLUserByLockId = async (req, res) => {
 };
 
 controller.toggleSystemSecurity = async (req, res) => {
-  const lock_id = req.params.lockid;
-  const isSystemEnabled = req.body.isSystemEnabled = "True" ? true : false;
+  const lockid = req.params.lockid;
+  const isSystemEnabled = req.body.isSystemEnabled = "true" ? true : false;
   try {
-    const lock = await Lock.findOne({ lock_id: lockid });
+    const lock = await Lock.findOne({ lockid: lockid });
 
     if (!lock) {
       return res.status(404).json({
@@ -96,11 +96,14 @@ controller.toggleSystemSecurity = async (req, res) => {
     }
     lock.isSystemEnabled = isSystemEnabled;
     await lock.save();
-    req.status(200).json({ msg: "Request to add new ACL successful", isSystemEnabled: isSystemEnabled })
+    res.status(200).json({ msg: "Request to add new ACL successful", isSystemEnabled: isSystemEnabled })
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({ msg: "Fail to send request", error: [err.Message] })
   }
 };
 
-controller.getLogs = async (req, res) => { 
+controller.getLogs = async (req, res) => {
   const lockid = req.params.lockid;
   try {
     const log = await Message.find({ lockid: lockid });
@@ -114,7 +117,7 @@ controller.getLogs = async (req, res) => {
   }
 };
 
-controller.getSystemSecurityState = async (req, res) => {};
+controller.getSystemSecurityState = async (req, res) => { };
 
 controller.disableSiren = async (req, res) => {
   const lockid = req.params.lockid;

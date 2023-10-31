@@ -82,9 +82,25 @@ controller.deleteACLUserByLockId = async (req, res) => {
   }
 };
 
-controller.toggleSystemSecurity = async (req, res) => {};
+controller.toggleSystemSecurity = async (req, res) => {
+  const lock_id = req.params.lockid;
+  const isSystemEnabled = req.body.isSystemEnabled = "True" ? true : false;
+  try {
+    const lock = await Lock.findOne({ lock_id: lockid });
 
-controller.getLogs = async (req, res) => {
+    if (!lock) {
+      return res.status(404).json({
+        msg: "Failed to update system status",
+        errors: ["Lock id does not exist"],
+      });
+    }
+    lock.isSystemEnabled = isSystemEnabled;
+    await lock.save();
+    req.status(200).json({ msg: "Request to add new ACL successful", isSystemEnabled: isSystemEnabled })
+  }
+};
+
+controller.getLogs = async (req, res) => { 
   const lockid = req.params.lockid;
   try {
     const log = await Message.find({ lockid: lockid });

@@ -1,6 +1,7 @@
 const express = require('express');
 const connectDB = require('./config/db');
 const cors = require('cors');
+const mqttService = require('./services/mqtt-service');
 // 
 const app = express();
 
@@ -23,5 +24,5 @@ app.listen(PORT, () => {
 });
 
 // Starts subscribing to addSong event
-// amqpService.logSubscriber();
-// amqpService.sirenSubscriber();
+mqttService.logSubscriber();
+// mqttService.sirenSubscriber();

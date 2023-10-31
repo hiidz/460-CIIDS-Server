@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
 const MessageSchema = new mongoose.Schema({
-  message_id: {
+  lockid: {
     type: String,
   },
-  lock_id: {
+  message_id: {
     type: String,
   },
   message: [{type: String}],

@@ -1,5 +1,6 @@
 const Lock = require("../models/Lock"); // Import your User model
 const mqttService = require("../services/mqtt-service");
+const Message = require("../models/Message")
 
 const controller = {};
 
@@ -43,7 +44,7 @@ controller.addACLUserByLockId = async (req, res) => {
 
     await lock.save();
 
-    res.status(200).json({ msg: "Request to add new ACL successful" });
+    res.status(201).json({ msg: "Request to add new ACL successful" });
 
     mqttService.publishNewAcl(
       lockid,
@@ -80,5 +81,27 @@ controller.deleteACLUserByLockId = async (req, res) => {
       .json({ msg: "Fail to send request", errors: ["Server error"] });
   }
 };
+
+controller.toggleSystemSecurity = async (req, res) => {
+    
+}
+
+controller.getLogs = async (req, res) => {
+    const lockid = req.params.lockid;
+    try {
+      const log = await Message.find({lockid: lockid});
+      if (!log) {
+        res.status(404).json({msg: "Invalid lock id"})
+      }
+      res.status(200).json(log)
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({msg: "Failed to send request", errors: [err]})
+    }
+}
+
+controller.getSystemSecurityState = async (req, res) => {
+
+}
 
 module.exports = controller;

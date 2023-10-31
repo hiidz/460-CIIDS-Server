@@ -1,6 +1,6 @@
 const Lock = require("../models/Lock"); // Import your User model
 const mqttService = require("../services/mqtt-service");
-const Message = require("../models/Message")
+const Message = require("../models/Message");
 
 const controller = {};
 
@@ -82,26 +82,35 @@ controller.deleteACLUserByLockId = async (req, res) => {
   }
 };
 
-controller.toggleSystemSecurity = async (req, res) => {
-    
-}
+controller.toggleSystemSecurity = async (req, res) => {};
 
 controller.getLogs = async (req, res) => {
-    const lockid = req.params.lockid;
-    try {
-      const log = await Message.find({lockid: lockid});
-      if (!log) {
-        res.status(404).json({msg: "Invalid lock id"})
-      }
-      res.status(200).json(log)
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({msg: "Failed to send request", errors: [err]})
+  const lockid = req.params.lockid;
+  try {
+    const log = await Message.find({ lockid: lockid });
+    if (!log) {
+      res.status(404).json({ msg: "Invalid lock id" });
     }
-}
+    res.status(200).json(log);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ msg: "Failed to send request", errors: [err] });
+  }
+};
 
-controller.getSystemSecurityState = async (req, res) => {
+controller.getSystemSecurityState = async (req, res) => {};
 
-}
+controller.disableSiren = async (req, res) => {
+  const lockid = req.params.lockid;
+  try {
+    mqttService.publishDisableSiren(lockid);
+    res.status(200).json({ msg: "Request to disable siren successful" });
+  } catch (err) {
+    console.log(err);
+    res
+      .status(500)
+      .json({ msg: "Fail to send request", errors: ["Server error"] });
+  }
+};
 
 module.exports = controller;

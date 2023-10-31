@@ -7,6 +7,7 @@ const LockSchema = new mongoose.Schema({
   acl: [{type: Object}], // access control list
   isSystemEnabled: {
     type: Boolean,
+    default: false,
   }
 });
 

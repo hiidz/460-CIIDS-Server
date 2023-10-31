@@ -4,11 +4,13 @@ const MessageSchema = new mongoose.Schema({
   lockid: {
     type: String,
   },
-  message_id: {
+  message: {
     type: String,
   },
-  message: [{type: String}],
-  timestamp: [{type: String}]
+  timestamp: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model("messages", MessageSchema);

@@ -1,7 +1,7 @@
 const mqtt = require("mqtt");
 const mqttService = {};
 
-const Message = require("../models/Message")
+const Message = require("../models/Message");
 
 // Define HiveMQ credentials
 const mqttUsername = "cs460-ciids";
@@ -15,52 +15,71 @@ const client = mqtt.connect(mqttURL, {
 });
 
 // Ensure MQTT Broker connected
-client.on('connect', () => {
-  console.log('MQTT Connected!');
+client.on("connect", () => {
+  console.log("MQTT Connected!");
 });
 
+client.on("message", async function (topic, message) {
+  console.log(topic, "\n", message.toString());
 
-  // called each time a message is received
-  // Add logic to save to DB
-
-/*   1. Publish logs
-3. Publish/Subscribe siren activation/deactivation*/
-
-// const lockid = req.params.lockid;
-// const newACLObj = req.body.acl;
-
-client.on('message', async function (topic, message) {
-  // called each time a message is received
-  const logMessage = message.toString()
-  console.log('Received message:', topic, logMessage);
-  try {
-    const new_log = new Message
-    await .save();
-  } catch (err){
-    console.log(err)
+  if (topic.split("/")[0] === "logs") {
+    saveLogs(message.toString(), topic.split("/")[1]);
   }
 
+  if (topic.split("/")[0] === "siren") {
+    activateSiren(topic.split("/")[1]);
+  }
 });
 
-// subscribe to topic 'my/test/topic'
-// client.subscribe('my/test/topic');
-
-
-
 // prints an error message
-client.on('error', (error) => {
-  console.log('Error:', error);
+client.on("error", (error) => {
+  console.log("Error:", error);
 });
 
 mqttService.publishNewAcl = async (lockid, aclList) => {
   client.publish(`acl/${lockid}`, JSON.stringify(aclList));
 };
 
-mqttService.logSubscriber = async (lockid) => {
-  client.subscribe(`logs`)
+mqttService.publishDisableSiren = async (lockid) => {
+  client.publish(`deactivate_alert/${lockid}`)
 }
 
-// subscribe to topic 'my/test/topic'
-// client.subscribe('my/test/topic');
+mqttService.logSubscriber = async () => {
+  client.subscribe(`logs/#`);
+};
+
+mqttService.sirenSubscriber = async () => {
+  client.subscribe(`siren/#`);
+};
+
+saveLogs = async (logMessage, lockid) => {
+  try {
+    const log = new Message({
+      lockid: lockid,
+      message: logMessage,
+    });
+
+    await log.save();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+activateSiren = async (lockid) => {
+  // push notification to react native
+
+  try {
+    const data = await Lock.findOne({ lock_id: lockid });
+    if (!data) {
+      console.log("lockid:", lockid, "dont exist");
+      return;
+    }
+
+    // push notification logic
+
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 module.exports = mqttService;

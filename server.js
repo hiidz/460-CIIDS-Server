@@ -25,4 +25,4 @@ app.listen(PORT, () => {
 
 // Starts subscribing to addSong event
 mqttService.logSubscriber();
-// mqttService.sirenSubscriber();
+mqttService.sirenSubscriber();

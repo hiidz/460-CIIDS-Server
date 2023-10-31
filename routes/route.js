@@ -9,5 +9,6 @@ router.patch("/lock/:lockid/acl/delete/:name", controller.deleteACLUserByLockId)
 // router.patch("/user/following/:username/add", userController.addFollowing);
 
 router.get("/logs/:lockid", controller.getLogs)
+router.patch("/lock/:lockid/systemSecurity", controller.toggleSystemSecurity)
 
 module.exports = router;

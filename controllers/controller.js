@@ -99,9 +99,12 @@ controller.toggleSystemSecurity = async (req, res) => {
 
     console.log("system state is now: ", isSystemEnabled);
     res.status(200).json({
-      msg: "Request to add new ACL successful",
+      msg: "Request to change system state successful",
       isSystemEnabled: isSystemEnabled,
     });
+
+    mqttService.publishSystemState(lockid, isSystemEnabled);
+
   } catch (err) {
     console.log(err);
     res.status(500).json({ msg: "Fail to send request", error: [err.Message] });
@@ -140,8 +143,6 @@ controller.getLogs = async (req, res) => {
     res.status(500).json({ msg: "Failed to send request", errors: [err] });
   }
 };
-
-controller.getSystemSecurityState = async (req, res) => {};
 
 controller.disableSiren = async (req, res) => {
   const lockid = req.params.lockid;

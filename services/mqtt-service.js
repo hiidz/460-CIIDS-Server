@@ -41,8 +41,15 @@ mqttService.publishNewAcl = async (lockid, aclList) => {
 };
 
 mqttService.publishDisableSiren = async (lockid) => {
-  client.publish(`deactivate_alert/${lockid}`, "disable_siren")
-}
+  client.publish(`deactivate_alert/${lockid}`, "disable_siren");
+};
+
+mqttService.publishSystemState = async (lockid, isSystemEnabled) => {
+  client.publish(
+    `toggle_system/${lockid}`,
+    isSystemEnabled ? "enable_system" : "disable_system"
+  );
+};
 
 mqttService.logSubscriber = async () => {
   client.subscribe(`logs/#`);
@@ -76,7 +83,6 @@ activateSiren = async (lockid) => {
     }
 
     // push notification logic
-
   } catch (err) {
     console.log(err);
   }

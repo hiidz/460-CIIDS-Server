@@ -97,13 +97,30 @@ controller.toggleSystemSecurity = async (req, res) => {
     lock.isSystemEnabled = isSystemEnabled;
     await lock.save();
 
-    console.log("system state is now: ",isSystemEnabled)
-    res
-      .status(200)
-      .json({
-        msg: "Request to add new ACL successful",
-        isSystemEnabled: isSystemEnabled,
+    console.log("system state is now: ", isSystemEnabled);
+    res.status(200).json({
+      msg: "Request to add new ACL successful",
+      isSystemEnabled: isSystemEnabled,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ msg: "Fail to send request", error: [err.Message] });
+  }
+};
+
+controller.getSystemSecurity = async (req, res) => {
+  const lockid = req.params.lockid;
+  try {
+    const lock = await Lock.findOne({ lockid: lockid });
+
+    if (!lock) {
+      return res.status(404).json({
+        msg: "Failed to update system status",
+        errors: ["Lock id does not exist"],
       });
+    }
+    console.log("system state fetched successfully");
+    res.status(200).json(lock.isSystemEnabled);
   } catch (err) {
     console.log(err);
     res.status(500).json({ msg: "Fail to send request", error: [err.Message] });

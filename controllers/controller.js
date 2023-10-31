@@ -8,7 +8,7 @@ controller.getACLByLockId = async (req, res) => {
   const lockid = req.params.lockid;
 
   try {
-    const data = await Lock.findOne({ lock_id: lockid });
+    const data = await Lock.findOne({ lockid: lockid });
     if (!data) {
       return res.status(400).json({
         msg: "Fail to fetch acl",
@@ -31,7 +31,7 @@ controller.addACLUserByLockId = async (req, res) => {
   const newACLObj = req.body.acl;
 
   try {
-    const lock = await Lock.findOne({ lock_id: lockid });
+    const lock = await Lock.findOne({ lockid: lockid });
 
     if (!lock) {
       return res.status(400).json({
@@ -64,7 +64,7 @@ controller.deleteACLUserByLockId = async (req, res) => {
 
   try {
     const response = await Lock.findOneAndUpdate(
-      { lock_id: lockid },
+      { lockid: lockid },
       { $pull: { acl: { name: name } } }
     ).lean();
 

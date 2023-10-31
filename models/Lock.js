@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const LockSchema = new mongoose.Schema({
-  lock_id: {
+  lockid: {
     type: String,
   },
   acl: [{type: Object}], // access control list

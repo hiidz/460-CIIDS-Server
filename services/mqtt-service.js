@@ -41,7 +41,7 @@ mqttService.publishNewAcl = async (lockid, aclList) => {
 };
 
 mqttService.publishDisableSiren = async (lockid) => {
-  client.publish(`deactivate_alert/${lockid}`)
+  client.publish(`deactivate_alert/${lockid}`, "disable_siren")
 }
 
 mqttService.logSubscriber = async () => {

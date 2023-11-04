@@ -40,18 +40,18 @@ client.on("error", (error) => {
 });
 
 mqttService.publishNewAcl = async (lockid, aclList) => {
-  client.publish(`acl/${lockid}`, JSON.stringify(aclList), { qos: 2 });
+  client.publish(`acl/${lockid}`, JSON.stringify(aclList));
 };
 
 mqttService.publishDisableSiren = async (lockid) => {
   console.log(lockid);
-  client.publish(`deactivate_alert/${lockid}`, "disable_siren", { qos: 2 });
+  client.publish(`deactivate_alert/${lockid}`, "disable_siren");
 };
 
 mqttService.publishSystemState = async (lockid, isSystemEnabled) => {
   client.publish(
     `toggle_system/${lockid}`,
-    isSystemEnabled ? "enable_system" : "disable_system", { qos: 2 }
+    isSystemEnabled ? "enable_system" : "disable_system"
   );
 };
 

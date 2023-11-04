@@ -55,7 +55,7 @@ controller.addACLUserByLockId = async (req, res) => {
 
     res.status(201).json({ msg: "Request to add new ACL successful" });
 
-    mqttClient.publishNewAcl(
+    mqttClient.client.publishNewAcl(
       lockid,
       lock.acl.map((obj) => obj.id)
     );
@@ -79,7 +79,7 @@ controller.deleteACLUserByLockId = async (req, res) => {
 
     res.status(200).json({ msg: "Request to delete new ACL successful" });
 
-    mqttClient.publishNewAcl(
+    mqttClient.client.publishNewAcl(
       lockid,
       response.acl.filter((obj) => obj.name !== name).map((obj) => obj.id)
     );
@@ -112,7 +112,7 @@ controller.toggleSystemSecurity = async (req, res) => {
       isSystemEnabled: isSystemEnabled,
     });
 
-    mqttClient.publishSystemState(lockid, isSystemEnabled);
+    mqttClient.client.publishSystemState(lockid, isSystemEnabled);
   } catch (err) {
     console.log(err);
     res.status(500).json({ msg: "Fail to send request", error: [err.Message] });
@@ -155,7 +155,7 @@ controller.getLogs = async (req, res) => {
 controller.disableSiren = async (req, res) => {
   const lockid = req.params.lockid;
   try {
-    mqttClient.publishDisableSiren(lockid);
+    mqttClient.client.publishDisableSiren(lockid);
     res.status(200).json({ msg: "Request to disable siren successful" });
   } catch (err) {
     console.log(err);

@@ -1,6 +1,6 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-const db = `mongodb+srv://cs460-ciids:cs460-ciids@cs460.kiinvai.mongodb.net/cs460`;
+const db = process.env.mongoDB;
 
 const connectDB = async () => {
   try {

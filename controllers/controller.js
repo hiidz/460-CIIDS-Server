@@ -104,7 +104,6 @@ controller.toggleSystemSecurity = async (req, res) => {
     });
 
     mqttService.publishSystemState(lockid, isSystemEnabled);
-
   } catch (err) {
     console.log(err);
     res.status(500).json({ msg: "Fail to send request", error: [err.Message] });
@@ -156,5 +155,12 @@ controller.disableSiren = async (req, res) => {
       .json({ msg: "Fail to send request", errors: ["Server error"] });
   }
 };
+
+controller.registerToken = async (req, res) => {
+  tokens.push(req.body.token);
+  res.status(200).json({ message: "Successfully registered FCM Token!" });
+};
+
+
 
 module.exports = controller;

@@ -8,6 +8,9 @@ const LockSchema = new mongoose.Schema({
   isSystemEnabled: {
     type: Boolean,
     default: false,
+  },
+  token: {
+    type: String,
   }
 });
 

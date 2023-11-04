@@ -26,8 +26,3 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-## backend database stuff/secrets
-
-# backend/config/default.json
-
-.terraform

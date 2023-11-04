@@ -1,13 +1,16 @@
+require('dotenv').config();
 const mqtt = require("mqtt");
 const mqttService = {};
+const Lock = require("../models/Lock");
+const notifService = require("../services/notif-service");
+
 
 const Message = require("../models/Message");
 
 // Define HiveMQ credentials
-const mqttUsername = "cs460-ciids";
-const mqttPassword = "cs460-ciids";
-const mqttURL =
-  "tls://8b75be343db54492af6d707435cdbdf5.s2.eu.hivemq.cloud:8883";
+const mqttUsername = process.env.mqttUsername;
+const mqttPassword = process.env.mqttPassword;
+const mqttURL = process.env.mqttURL;
 
 const client = mqtt.connect(mqttURL, {
   username: mqttUsername,
@@ -41,6 +44,7 @@ mqttService.publishNewAcl = async (lockid, aclList) => {
 };
 
 mqttService.publishDisableSiren = async (lockid) => {
+  console.log(lockid);
   client.publish(`deactivate_alert/${lockid}`, "disable_siren");
 };
 
@@ -73,16 +77,15 @@ saveLogs = async (logMessage, lockid) => {
 };
 
 activateSiren = async (lockid) => {
-  // push notification to react native
-
   try {
-    const data = await Lock.findOne({ lock_id: lockid });
+    const data = await Lock.findOne({ lockid: lockid });
     if (!data) {
       console.log("lockid:", lockid, "dont exist");
       return;
     }
 
-    // push notification logic
+    notifService.pushNotification(lockid);
+
   } catch (err) {
     console.log(err);
   }

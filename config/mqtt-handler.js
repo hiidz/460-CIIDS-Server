@@ -16,7 +16,6 @@ class MqttHandler {
     this.mqttClient = mqtt.connect(this.host, {
       username: this.username,
       password: this.password,
-      reconnectPeriod: 5000
     });
 
     // Mqtt error calback
@@ -28,10 +27,6 @@ class MqttHandler {
     // Connection callback
     this.mqttClient.on("connect", () => {
       console.log("MQTT Connected!");
-    });
-
-    this.mqttClient.on("reconnect", () => {
-      console.log("Reconnecting to MQTT broker");
     });
 
     // mqtt subscriptions

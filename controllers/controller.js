@@ -4,6 +4,9 @@ const Message = require("../models/Message");
 
 const controller = {};
 const mqttClient = new mqttHandler();
+if (mqttClient.client === null) {
+  mqttClient.connect();
+}
 
 
 controller.healthCheck = async(req,res) => {

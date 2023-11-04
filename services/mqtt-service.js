@@ -56,14 +56,10 @@ mqttService.publishSystemState = async (lockid, isSystemEnabled) => {
 };
 
 mqttService.logSubscriber = async () => {
-  console.log("LOG SUBSCRIBTION STARTED")
-
   client.subscribe(`logs/#`, {qos: 2});
 };
 
 mqttService.sirenSubscriber = async () => {
-  console.log("SIREN SUBSCRIBTION STARTED")
-
   client.subscribe(`siren/#`, {qos: 2});
 };
 

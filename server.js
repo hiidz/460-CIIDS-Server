@@ -1,16 +1,12 @@
 const express = require("express");
 const connectDB = require("./config/db");
 const cors = require("cors");
+const mqttService = require("./services/mqtt-service");
 const bodyParser = require("body-parser");
 const app = express();
-const mqttHandler = require('./config/mqtt-handler');
 
 // Connect Database
 connectDB();
-
-// Connect MQTT
-const mqttClient = new mqttHandler();
-mqttClient.connect();
 
 // Init Middleware
 app.use(express.json());
@@ -27,6 +23,9 @@ app.listen(PORT, () => {
   console.log(`CIIDS backend service running on port ${PORT}`);
 });
 
+// Starts subscribing to addSong event
+mqttService.logSubscriber();
+mqttService.sirenSubscriber();
 
 // Export the Express API
 module.exports = app;

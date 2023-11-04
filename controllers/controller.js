@@ -1,5 +1,5 @@
 const Lock = require("../models/Lock"); // Import your User model
-const mqttHandler = require('../config/mqtt-handler');
+const mqttService = require("../services/mqtt-service");
 const Message = require("../models/Message");
 
 const controller = {};
@@ -50,7 +50,7 @@ controller.addACLUserByLockId = async (req, res) => {
 
     res.status(201).json({ msg: "Request to add new ACL successful" });
 
-    mqttHandler.publishNewAcl(
+    mqttService.publishNewAcl(
       lockid,
       lock.acl.map((obj) => obj.id)
     );
@@ -74,7 +74,7 @@ controller.deleteACLUserByLockId = async (req, res) => {
 
     res.status(200).json({ msg: "Request to delete new ACL successful" });
 
-    mqttHandler.publishNewAcl(
+    mqttService.publishNewAcl(
       lockid,
       response.acl.filter((obj) => obj.name !== name).map((obj) => obj.id)
     );
@@ -107,7 +107,7 @@ controller.toggleSystemSecurity = async (req, res) => {
       isSystemEnabled: isSystemEnabled,
     });
 
-    mqttHandler.publishSystemState(lockid, isSystemEnabled);
+    mqttService.publishSystemState(lockid, isSystemEnabled);
   } catch (err) {
     console.log(err);
     res.status(500).json({ msg: "Fail to send request", error: [err.Message] });
@@ -150,7 +150,7 @@ controller.getLogs = async (req, res) => {
 controller.disableSiren = async (req, res) => {
   const lockid = req.params.lockid;
   try {
-    mqttHandler.publishDisableSiren(lockid);
+    mqttService.publishDisableSiren(lockid);
     res.status(200).json({ msg: "Request to disable siren successful" });
   } catch (err) {
     console.log(err);

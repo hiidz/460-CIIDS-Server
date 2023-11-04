@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "start": "node server.js",
-    "server": "nodemon server"
+    "server": "nodemon server",
+    "vercel-build": "echo hello"
   },
   "author": "",
   "license": "ISC",

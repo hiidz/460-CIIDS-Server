@@ -26,6 +26,3 @@ app.listen(PORT, () => {
 // Starts subscribing to addSong event
 mqttService.logSubscriber();
 mqttService.sirenSubscriber();
-
-// Export the Express API
-module.exports = app;

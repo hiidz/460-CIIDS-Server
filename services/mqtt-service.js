@@ -56,11 +56,11 @@ mqttService.publishSystemState = async (lockid, isSystemEnabled) => {
 };
 
 mqttService.logSubscriber = async () => {
-  client.subscribe(`logs/#`, {qos: 2});
+  client.subscribe(`logs/#`);
 };
 
 mqttService.sirenSubscriber = async () => {
-  client.subscribe(`siren/#`, {qos: 2});
+  client.subscribe(`siren/#`);
 };
 
 saveLogs = async (logMessage, lockid) => {

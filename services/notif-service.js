@@ -19,6 +19,7 @@ notifService.registerPushToken = async (req, res) => {
 };
 
 notifService.pushNotification = async (lockid) => {
+  console.log("PUSH NOTIFICATION ACTIVATED")
   const token = await tokenService.getToken(lockid);
   try {
     expo.sendPushNotificationsAsync([

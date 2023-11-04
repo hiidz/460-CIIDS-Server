@@ -1,8 +1,11 @@
-require('dotenv').config();
+require("dotenv").config();
 const mqtt = require("mqtt");
 
 class MqttHandler {
   constructor() {
+    if (MqttHandler.instance) {
+      return MqttHandler.instance;
+    }
     this.mqttClient = null;
     this.host = process.env.mqttURL;
     this.username = process.env.mqttUsername;
@@ -50,12 +53,16 @@ class MqttHandler {
 
   // Sends a mqtt message to topic: mytopic
   publishNewAcl = async (lockid, aclList) => {
-    this.mqttClient.publish(`acl/${lockid}`, JSON.stringify(aclList), { qos: 2 });
+    this.mqttClient.publish(`acl/${lockid}`, JSON.stringify(aclList), {
+      qos: 2,
+    });
   };
 
   publishDisableSiren = async (lockid) => {
     console.log(lockid);
-    this.mqttClient.publish(`deactivate_alert/${lockid}`, "disable_siren", { qos: 2 });
+    this.mqttClient.publish(`deactivate_alert/${lockid}`, "disable_siren", {
+      qos: 2,
+    });
   };
 
   publishSystemState = async (lockid, isSystemEnabled) => {

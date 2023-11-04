@@ -4,6 +4,10 @@ const Message = require("../models/Message");
 
 const controller = {};
 
+controller.healthCheck = async(req,res) => {
+  return res.status(200).json({health_check: "success"});
+}
+
 controller.getACLByLockId = async (req, res) => {
   const lockid = req.params.lockid;
 

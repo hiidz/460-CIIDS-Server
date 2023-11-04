@@ -17,4 +17,6 @@ router.patch("/lock/:lockid/systemSecurity", controller.toggleSystemSecurity);
 
 router.post("/registerPushToken", notifService.registerPushToken);
 
+router.get("/health", controller.healthCheck);
+
 module.exports = router;
